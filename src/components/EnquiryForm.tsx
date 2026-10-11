@@ -5,6 +5,82 @@ import { BRAND_INFO } from '../data/products';
 export const RECIPIENT_EMAIL = 'sales@lattis.in';
 export const CONTACT_PHONE = '+91 9742444744';
 
+/**
+ * Validates and normalizes an Indian mobile number.
+ *
+ * Rules:
+ * - Accept valid 10-digit Indian mobile number beginning with 6, 7, 8 or 9.
+ * - Accept optional +91, 91 or trunk 0 prefix with spaces or hyphens.
+ * - Reject numbers with more or fewer than 10 digits after normalization.
+ * - Reject repeated sequences like 6666666666, 7777777777, etc.
+ */
+export const validateIndianMobile = (
+  raw: string
+): { isValid: boolean; normalized: string; formatted: string; error?: string } => {
+  if (!raw || !raw.trim()) {
+    return { isValid: false, normalized: '', formatted: '', error: 'Mobile number is required.' };
+  }
+
+  // Remove common separators (spaces, hyphens, parentheses, dots)
+  let cleaned = raw.trim().replace(/[\s\-\(\)\.]/g, '');
+
+  // Handle international & trunk prefixes
+  if (cleaned.startsWith('+91')) {
+    cleaned = cleaned.slice(3);
+  } else if (cleaned.startsWith('0') && cleaned.length === 11) {
+    cleaned = cleaned.slice(1);
+  } else if (cleaned.startsWith('91') && cleaned.length === 12) {
+    cleaned = cleaned.slice(2);
+  }
+
+  // Check if non-digit characters remain
+  if (!/^\d+$/.test(cleaned)) {
+    return {
+      isValid: false,
+      normalized: cleaned,
+      formatted: raw,
+      error: 'Mobile number must contain digits only.'
+    };
+  }
+
+  // Reject more or fewer than 10 digits after normalization
+  if (cleaned.length !== 10) {
+    return {
+      isValid: false,
+      normalized: cleaned,
+      formatted: raw,
+      error: 'Please enter a valid 10-digit Indian mobile number.'
+    };
+  }
+
+  // Check starting digit (must begin with 6, 7, 8 or 9)
+  if (!/^[6-9]/.test(cleaned)) {
+    return {
+      isValid: false,
+      normalized: cleaned,
+      formatted: raw,
+      error: 'Indian mobile numbers must begin with 6, 7, 8 or 9.'
+    };
+  }
+
+  // Reject all 10 digits being the exact same repeated digit (e.g. 6666666666)
+  if (/^(\d)\1{9}$/.test(cleaned)) {
+    return {
+      isValid: false,
+      normalized: cleaned,
+      formatted: raw,
+      error: 'Repeated-digit sequence is not a valid mobile number.'
+    };
+  }
+
+  const formatted = `+91 ${cleaned.slice(0, 5)} ${cleaned.slice(5)}`;
+  return {
+    isValid: true,
+    normalized: cleaned,
+    formatted
+  };
+};
+
 interface EnquiryFormProps {
   initialProduct?: 'tl-513' | 'ts-523' | 'both';
   initialNote?: string;
@@ -39,14 +115,24 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     const errs: Record<string, string> = {};
     if (!formData.name.trim()) errs.name = 'Contact name is required.';
     if (!formData.company.trim()) errs.company = 'Company name is required.';
-    if (!formData.phone.trim()) errs.phone = 'Phone number is required.';
+
+    // Comprehensive Indian mobile validation
+    const phoneCheck = validateIndianMobile(formData.phone);
+    if (!phoneCheck.isValid) {
+      errs.phone = phoneCheck.error || 'Please enter a valid 10-digit mobile number.';
+    }
+
     if (!formData.email.trim() || !formData.email.includes('@')) {
       errs.email = 'A valid work email is required.';
     }
     if (!formData.city.trim()) errs.city = 'City / location is required.';
+
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
+
+  // Format verified phone for clean presentation in email
+  const verifiedPhone = validateIndianMobile(formData.phone).formatted || formData.phone;
 
   const formattedEnquiry = `LATTIS INDUSTRIAL ADHESIVES — ENQUIRY
 ----------------------------------------------------------------------
@@ -56,7 +142,7 @@ To: ${RECIPIENT_EMAIL}
 CONTACT DETAILS:
 - Name: ${formData.name}
 - Company: ${formData.company}
-- Phone: ${formData.phone}
+- Phone: ${verifiedPhone}
 - Email: ${formData.email}
 - Location: ${formData.city}
 
@@ -78,7 +164,11 @@ Address: ${BRAND_INFO.name}, ${BRAND_INFO.address}
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+
+    // Validate phone number and other fields before constructing or opening mailto:
+    if (!validate()) {
+      return;
+    }
 
     const subject = encodeURIComponent(`Product Enquiry: ${formData.company} - ${formData.product.toUpperCase()}`);
     const body = encodeURIComponent(formattedEnquiry);
@@ -206,77 +296,183 @@ Thank you.`;
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
-                    NAME *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label htmlFor="name-input" className="block text-xs font-mono font-semibold text-slate-700">
+                      NAME *
+                    </label>
+                    {errors.name && (
+                      <span className="text-[11px] text-red-600 font-mono font-medium">
+                        {errors.name}
+                      </span>
+                    )}
+                  </div>
                   <input
+                    id="name-input"
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, name: e.target.value });
+                      if (errors.name && e.target.value.trim()) {
+                        setErrors((prev) => {
+                          const next = { ...prev };
+                          delete next.name;
+                          return next;
+                        });
+                      }
+                    }}
                     placeholder="Contact name"
-                    className="w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
+                    className={`w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border transition-colors focus:bg-white focus:outline-none ${
+                      errors.name ? 'border-red-600 focus:border-red-600' : 'border-slate-300 focus:border-slate-900'
+                    }`}
                   />
-                  {errors.name && <span className="text-[11px] text-red-600 font-mono mt-0.5 block">{errors.name}</span>}
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
-                    COMPANY *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label htmlFor="company-input" className="block text-xs font-mono font-semibold text-slate-700">
+                      COMPANY *
+                    </label>
+                    {errors.company && (
+                      <span className="text-[11px] text-red-600 font-mono font-medium">
+                        {errors.company}
+                      </span>
+                    )}
+                  </div>
                   <input
+                    id="company-input"
                     type="text"
                     required
                     value={formData.company}
-                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, company: e.target.value });
+                      if (errors.company && e.target.value.trim()) {
+                        setErrors((prev) => {
+                          const next = { ...prev };
+                          delete next.company;
+                          return next;
+                        });
+                      }
+                    }}
                     placeholder="Company / Workshop"
-                    className="w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
+                    className={`w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border transition-colors focus:bg-white focus:outline-none ${
+                      errors.company ? 'border-red-600 focus:border-red-600' : 'border-slate-300 focus:border-slate-900'
+                    }`}
                   />
-                  {errors.company && <span className="text-[11px] text-red-600 font-mono mt-0.5 block">{errors.company}</span>}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
-                    PHONE *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label htmlFor="phone-input" className="block text-xs font-mono font-semibold text-slate-700">
+                      PHONE *
+                    </label>
+                    {errors.phone && (
+                      <span id="phone-error" className="text-[11px] text-red-600 font-mono font-medium">
+                        {errors.phone}
+                      </span>
+                    )}
+                  </div>
                   <input
+                    id="phone-input"
                     type="tel"
                     required
+                    name="phone"
+                    autoComplete="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 9742444744"
-                    className="w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setFormData((prev) => ({ ...prev, phone: val }));
+                      // Clear error dynamically as soon as the user corrects to a valid format
+                      if (errors.phone) {
+                        const check = validateIndianMobile(val);
+                        if (check.isValid) {
+                          setErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.phone;
+                            return next;
+                          });
+                        }
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const val = e.target.value;
+                      if (val.trim()) {
+                        const check = validateIndianMobile(val);
+                        if (!check.isValid) {
+                          setErrors((prev) => ({ ...prev, phone: check.error || 'Invalid phone number.' }));
+                        } else {
+                          setErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.phone;
+                            return next;
+                          });
+                        }
+                      }
+                    }}
+                    placeholder="+91 98765 43210"
+                    pattern="^(?:(?:\+91|91|0)[\s\-]?)?[6-9]\d{4}[\s\-]?\d{5}$"
+                    title="Please enter a valid 10-digit Indian mobile number beginning with 6, 7, 8 or 9 (e.g. +91 98765 43210)"
+                    aria-invalid={!!errors.phone}
+                    aria-describedby={errors.phone ? 'phone-error' : undefined}
+                    className={`w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border transition-colors focus:bg-white focus:outline-none ${
+                      errors.phone
+                        ? 'border-red-600 focus:border-red-600 ring-1 ring-red-600/30'
+                        : 'border-slate-300 focus:border-slate-900'
+                    }`}
                   />
-                  {errors.phone && <span className="text-[11px] text-red-600 font-mono mt-0.5 block">{errors.phone}</span>}
+                  <span className="text-[10px] text-slate-500 font-mono mt-1 block">
+                    10-digit Indian mobile starting with 6, 7, 8 or 9 (e.g. +91 98765 43210)
+                  </span>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
-                    EMAIL *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label htmlFor="email-input" className="block text-xs font-mono font-semibold text-slate-700">
+                      EMAIL *
+                    </label>
+                    {errors.email && (
+                      <span className="text-[11px] text-red-600 font-mono font-medium">
+                        {errors.email}
+                      </span>
+                    )}
+                  </div>
                   <input
+                    id="email-input"
                     type="email"
                     required
+                    name="email"
+                    autoComplete="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (errors.email && e.target.value.includes('@')) {
+                        setErrors((prev) => {
+                          const next = { ...prev };
+                          delete next.email;
+                          return next;
+                        });
+                      }
+                    }}
                     placeholder="contact@company.com"
-                    className="w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
+                    className={`w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border transition-colors focus:bg-white focus:outline-none ${
+                      errors.email ? 'border-red-600 focus:border-red-600' : 'border-slate-300 focus:border-slate-900'
+                    }`}
                   />
-                  {errors.email && <span className="text-[11px] text-red-600 font-mono mt-0.5 block">{errors.email}</span>}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
+                  <label htmlFor="product-select" className="block text-xs font-mono font-semibold text-slate-700 mb-1">
                     PRODUCT *
                   </label>
                   <select
+                    id="product-select"
                     value={formData.product}
                     onChange={(e) => setFormData({ ...formData, product: e.target.value as any })}
                     className="w-full min-h-[44px] px-3 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
@@ -288,10 +484,11 @@ Thank you.`;
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
+                  <label htmlFor="size-select" className="block text-xs font-mono font-semibold text-slate-700 mb-1">
                     SIZE *
                   </label>
                   <select
+                    id="size-select"
                     value={formData.size}
                     onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                     className="w-full min-h-[44px] px-3 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
@@ -304,10 +501,11 @@ Thank you.`;
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
+                  <label htmlFor="qty-select" className="block text-xs font-mono font-semibold text-slate-700 mb-1">
                     QUANTITY *
                   </label>
                   <select
+                    id="qty-select"
                     value={formData.quantity}
                     onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                     className="w-full min-h-[44px] px-3 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
@@ -323,25 +521,44 @@ Thank you.`;
               </div>
 
               <div>
-                <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
-                  CITY / REGION *
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label htmlFor="city-input" className="block text-xs font-mono font-semibold text-slate-700">
+                    CITY / REGION *
+                  </label>
+                  {errors.city && (
+                    <span className="text-[11px] text-red-600 font-mono font-medium">
+                      {errors.city}
+                    </span>
+                  )}
+                </div>
                 <input
+                  id="city-input"
                   type="text"
                   required
                   value={formData.city}
-                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, city: e.target.value });
+                    if (errors.city && e.target.value.trim()) {
+                      setErrors((prev) => {
+                        const next = { ...prev };
+                        delete next.city;
+                        return next;
+                      });
+                    }
+                  }}
                   placeholder="e.g. Bengaluru, Karnataka"
-                  className="w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
+                  className={`w-full min-h-[44px] px-3.5 py-2.5 text-xs bg-[#F8F9FA] border transition-colors focus:bg-white focus:outline-none ${
+                    errors.city ? 'border-red-600 focus:border-red-600' : 'border-slate-300 focus:border-slate-900'
+                  }`}
                 />
-                {errors.city && <span className="text-[11px] text-red-600 font-mono mt-0.5 block">{errors.city}</span>}
               </div>
 
               <div>
-                <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">
+                <label htmlFor="notes-textarea" className="block text-xs font-mono font-semibold text-slate-700 mb-1">
                   APPLICATION DETAILS (OPTIONAL)
                 </label>
                 <textarea
+                  id="notes-textarea"
                   rows={2}
                   value={formData.applicationNote}
                   onChange={(e) => setFormData({ ...formData, applicationNote: e.target.value })}
@@ -353,7 +570,7 @@ Thank you.`;
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full min-h-[48px] py-3 px-6 text-xs font-bold uppercase tracking-wider text-white bg-[#0B2545] hover:bg-[#071930] border-b-2 border-[#A66A3F] transition-all flex items-center justify-center shadow-xs"
+                  className="w-full min-h-[48px] py-3 px-6 text-xs font-bold uppercase tracking-wider text-white bg-[#0B2545] hover:bg-[#071930] border-b-2 border-[#A66A3F] transition-all flex items-center justify-center shadow-xs cursor-pointer"
                 >
                   Submit Enquiry →
                 </button>
