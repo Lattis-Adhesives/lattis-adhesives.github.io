@@ -2,5 +2,7 @@
   "name": "LATTIS Industrial Adhesives",
   "description": "Engineered anaerobic threadlockers and thread sealants for industrial mechanical assemblies. Official digital platform for LATTIS TL-513 and TS-523.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
