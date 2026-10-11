@@ -10,7 +10,10 @@ export const Footer: React.FC<FooterProps> = ({ onEnquireClick }) => {
   const [showLegalModal, setShowLegalModal] = useState<null | 'privacy' | 'terms'>(null);
 
   return (
-    <footer className="bg-slate-900 text-slate-400 border-t border-slate-800 font-sans text-xs">
+    <footer className="bg-slate-900 text-slate-400 border-t border-slate-800 font-sans text-xs relative">
+      {/* Engineering Brand Accent Line */}
+      <div className="h-[2px] w-full bg-gradient-to-r from-[#0B2545] via-[#A66A3F] to-[#784421]"></div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-8 border-b border-slate-800">
           {/* Logo & Tagline */}
@@ -33,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ onEnquireClick }) => {
             <button
               type="button"
               onClick={() => onEnquireClick('ts-523')}
-              className="text-slate-300 hover:text-white transition-colors min-h-[36px] flex items-center"
+              className="text-[#A66A3F] hover:text-[#E5B94F] font-semibold transition-colors min-h-[36px] flex items-center"
             >
               TS-523
             </button>

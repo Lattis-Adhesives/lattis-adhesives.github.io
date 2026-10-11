@@ -13,8 +13,8 @@ export const ProductBottleView: React.FC<ProductBottleViewProps> = ({
   onEnquireClick
 }) => {
   const isTL = product.id === 'tl-513';
-  const bandColor = isTL ? '#0B2545' : '#7A3E1D';
-  const subAccent = isTL ? '#0284C7' : '#944921';
+  const bandColor = isTL ? '#0B2545' : '#784421';
+  const subAccent = isTL ? '#0284C7' : '#A66A3F';
 
   return (
     <div className="bg-white border border-slate-300 shadow-xs relative overflow-hidden">
@@ -93,9 +93,10 @@ export const ProductBottleView: React.FC<ProductBottleViewProps> = ({
         </div>
 
         {/* Compact Mechanical Diagram Box */}
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center bg-slate-50 p-3.5 sm:p-4 border border-slate-200">
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center bg-[#FAF8F5] p-3.5 sm:p-4 border border-slate-200">
           <div>
-            <span className="font-mono text-[10px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+            <span className="font-mono text-[10px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 mb-1">
+              <span className="w-1.5 h-1.5 bg-[#A66A3F]" aria-hidden="true"></span>
               JOINT MECHANICS
             </span>
             <p className="text-xs text-slate-600 leading-relaxed font-sans">

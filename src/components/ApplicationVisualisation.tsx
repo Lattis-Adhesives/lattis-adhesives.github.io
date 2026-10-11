@@ -9,12 +9,17 @@ export const ApplicationVisualisation: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="max-w-2xl">
-          <span className="text-xs font-mono text-slate-500 uppercase block mb-1">
+          <span className="text-xs font-mono text-slate-500 uppercase flex items-center gap-1.5 mb-1">
+            <span className="w-1.5 h-1.5 bg-[#A66A3F]" aria-hidden="true"></span>
             02. Joint Mechanics
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
             How Anaerobic Chemistry Works
           </h2>
+          <div className="mt-2 mb-2 flex items-center gap-1.5">
+            <div className="w-10 h-0.5 bg-[#0B2545]"></div>
+            <div className="w-5 h-0.5 bg-[#A66A3F]"></div>
+          </div>
           <p className="mt-1 text-sm sm:text-base text-slate-600 leading-relaxed">
             Torqued threads achieve only 15% metal contact; the remaining 85% is empty clearance.
             LATTIS fills this gap completely, polymerising in the absence of air into an inert solid.
@@ -39,8 +44,8 @@ export const ApplicationVisualisation: React.FC = () => {
             onClick={() => setActiveJoint('pipe')}
             className={`min-h-[42px] w-full px-2 sm:px-4 py-2 font-mono text-[11px] sm:text-xs font-bold transition-all border flex items-center justify-center text-center leading-tight ${
               activeJoint === 'pipe'
-                ? 'bg-[#7A3E1D] text-white border-[#7A3E1D] shadow-xs'
-                : 'bg-white text-slate-700 border-slate-300 hover:border-slate-500'
+                ? 'bg-[#784421] text-white border-[#784421] shadow-xs'
+                : 'bg-white text-[#784421] border-[#A66A3F]/70 hover:bg-[#FAF4EF] hover:border-[#784421]'
             }`}
           >
             Pipe Fittings (TS-523)
@@ -48,15 +53,16 @@ export const ApplicationVisualisation: React.FC = () => {
         </div>
 
         {/* Display Card */}
-        <div className="mt-4 bg-white border-2 border-slate-900 p-4 sm:p-6 lg:p-8 relative">
+        <div className="mt-4 bg-white border-2 border-slate-900 border-t-2 border-t-[#A66A3F] p-4 sm:p-6 lg:p-8 relative">
           <div className="absolute top-4 right-4">
-            <CrosshairReticle size={18} color="#64748B" />
+            <CrosshairReticle size={18} color="#A66A3F" />
           </div>
 
           {activeJoint === 'fastener' ? (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
               <div className="lg:col-span-6 space-y-3 font-sans text-xs sm:text-sm">
-                <span className="font-mono text-xs font-bold text-[#0B2545] block">
+                <span className="font-mono text-xs font-bold text-[#0B2545] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 bg-[#A66A3F]" aria-hidden="true"></span>
                   TL-513 FASTENER MECHANICS
                 </span>
                 <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900">
@@ -84,7 +90,7 @@ export const ApplicationVisualisation: React.FC = () => {
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
               <div className="lg:col-span-6 space-y-3 font-sans text-xs sm:text-sm">
-                <span className="font-mono text-xs font-bold text-[#7A3E1D] block">
+                <span className="font-mono text-xs font-bold text-[#784421] block">
                   TS-523 PIPE SEAL MECHANICS
                 </span>
                 <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900">
@@ -98,8 +104,8 @@ export const ApplicationVisualisation: React.FC = () => {
                     <span className="text-slate-500 block">PTFE TAPE</span>
                     <span className="font-bold text-slate-800">Shreds & Creeps</span>
                   </div>
-                  <div className="p-2.5 bg-[#7A3E1D] text-white">
-                    <span className="text-amber-200 block">WITH TS-523</span>
+                  <div className="p-2.5 bg-[#784421] text-white">
+                    <span className="text-amber-100 block">WITH TS-523</span>
                     <span className="font-bold text-white">100% Insoluble Seal</span>
                   </div>
                 </div>

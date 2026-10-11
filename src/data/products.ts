@@ -58,11 +58,11 @@ export const PRODUCTS: Record<'tl-513' | 'ts-523', ProductData> = {
     category: 'Thread Sealing System',
     claim: 'Seals and Locks Threaded Fittings',
     operationalClassification: 'Leak Resistant | Vibration Resistant | Industrial Use',
-    themeColor: '#7A3E1D', // Industrial Warm Brown
-    accentColor: '#944921', // Darker Industrial Brown
+    themeColor: '#784421', // Primary Industrial Brown
+    accentColor: '#A66A3F', // Secondary Copper Brown
     bgLight: '#FBF6F2',
-    borderColor: '#E8D5C8',
-    textColor: '#5A2E15',
+    borderColor: '#A66A3F',
+    textColor: '#784421',
     availableSizes: ['10 ml', '25 ml', '50 ml'],
     directions: {
       clean: 'Remove oil, grease or dirt from threaded fitting surfaces.',

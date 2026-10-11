@@ -46,16 +46,21 @@ export const TechnicalResources: React.FC<TechnicalResourcesProps> = ({ onReques
   ];
 
   return (
-    <section id="technical-resources" className="py-12 sm:py-16 lg:py-20 bg-[#F8F9FA] border-b border-slate-300">
+    <section id="technical-resources" className="py-12 sm:py-16 lg:py-20 bg-[#FAF8F5] border-b border-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="pb-6 border-b border-slate-200 flex flex-col md:flex-row md:items-end justify-between gap-3">
           <div>
-            <span className="text-xs font-mono text-slate-500 uppercase block mb-1">
+            <span className="text-xs font-mono text-slate-500 uppercase flex items-center gap-1.5 mb-1">
+              <span className="w-1.5 h-1.5 bg-[#A66A3F]" aria-hidden="true"></span>
               04. Compliance & Engineering
             </span>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
               Data Sheets & Resources
             </h2>
+            <div className="mt-2 mb-2 flex items-center gap-1.5">
+              <div className="w-10 h-0.5 bg-[#0B2545]"></div>
+              <div className="w-5 h-0.5 bg-[#A66A3F]"></div>
+            </div>
           </div>
           <span className="text-xs font-mono text-slate-500">
             Official signed dossiers provided upon technical request
@@ -64,44 +69,57 @@ export const TechnicalResources: React.FC<TechnicalResourcesProps> = ({ onReques
 
         {/* Documentation Items */}
         <div className="mt-6 space-y-2.5">
-          {documents.map((doc) => (
-            <div
-              key={doc.id}
-              className="bg-white border border-slate-300 p-3.5 sm:p-4 hover:border-slate-400 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-            >
-              <div className="flex items-start sm:items-center gap-3 min-w-0">
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 shrink-0 mt-0.5 sm:mt-0">
-                  {doc.type}
-                </span>
-                <div className="min-w-0">
-                  <h3 className="font-display text-base sm:text-lg font-bold text-slate-900 leading-tight">
-                    {doc.title}
-                  </h3>
-                  <span className="font-mono text-[11px] text-slate-500 block sm:inline">{doc.product}</span>
+          {documents.map((doc) => {
+            const isTS = doc.id.includes('ts-523');
+            return (
+              <div
+                key={doc.id}
+                className="bg-white border border-slate-300 p-3.5 sm:p-4 hover:border-slate-400 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+              >
+                <div className="flex items-start sm:items-center gap-3 min-w-0">
+                  <span
+                    className={`font-mono text-[10px] font-bold px-2 py-0.5 border shrink-0 mt-0.5 sm:mt-0 ${
+                      isTS
+                        ? 'bg-[#FAF4EF] text-[#784421] border-[#A66A3F]/50'
+                        : 'bg-slate-100 text-slate-700 border-slate-200'
+                    }`}
+                  >
+                    {doc.type}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-display text-base sm:text-lg font-bold text-slate-900 leading-tight">
+                      {doc.title}
+                    </h3>
+                    <span className="font-mono text-[11px] text-slate-500 block sm:inline">{doc.product}</span>
+                  </div>
+                </div>
+
+                <div className="shrink-0 w-full sm:w-auto">
+                  {doc.available ? (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedDocPreview(doc.id)}
+                      className="min-h-[38px] px-4 py-1.5 text-xs font-mono font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 w-full sm:w-auto text-center flex items-center justify-center"
+                    >
+                      View Guide
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => onRequestDoc(doc.title)}
+                      className={`min-h-[38px] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white w-full sm:w-auto text-center flex items-center justify-center transition-all ${
+                        isTS
+                          ? 'bg-[#784421] hover:bg-[#66391a]'
+                          : 'bg-[#0B2545] hover:bg-[#071930]'
+                      }`}
+                    >
+                      Request PDF
+                    </button>
+                  )}
                 </div>
               </div>
-
-              <div className="shrink-0 w-full sm:w-auto">
-                {doc.available ? (
-                  <button
-                    type="button"
-                    onClick={() => setSelectedDocPreview(doc.id)}
-                    className="min-h-[38px] px-4 py-1.5 text-xs font-mono font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 w-full sm:w-auto text-center flex items-center justify-center"
-                  >
-                    View Guide
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => onRequestDoc(doc.title)}
-                    className="min-h-[38px] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-[#0B2545] hover:bg-[#071930] w-full sm:w-auto text-center flex items-center justify-center"
-                  >
-                    Request PDF
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

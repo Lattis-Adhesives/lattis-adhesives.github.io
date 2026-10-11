@@ -109,24 +109,29 @@ Thank you.`;
   const whatsappUrl = `https://wa.me/919742444744?text=${whatsappMessage}`;
 
   return (
-    <section id="enquiry" className="py-12 sm:py-16 lg:py-20 bg-[#F8F9FA] border-b border-slate-300">
+    <section id="enquiry" className="py-12 sm:py-16 lg:py-20 bg-[#FAF8F5] border-b border-slate-300">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white border-2 border-slate-900 p-4 sm:p-8 lg:p-10 shadow-xs relative">
+        <div className="bg-white border-2 border-slate-900 border-t-2 border-t-[#A66A3F] p-4 sm:p-8 lg:p-10 shadow-xs relative">
           <div className="absolute top-4 right-4">
-            <CrosshairReticle size={18} color="#64748B" />
+            <CrosshairReticle size={18} color="#A66A3F" />
           </div>
 
           {/* Section Header */}
           <div className="border-b border-slate-200 pb-5 mb-6">
-            <span className="text-xs font-mono text-slate-500 uppercase block mb-1">
+            <span className="text-xs font-mono text-slate-500 uppercase flex items-center gap-1.5 mb-1">
+              <span className="w-1.5 h-1.5 bg-[#A66A3F]" aria-hidden="true"></span>
               Contact & Technical Enquiry
             </span>
             <h2 className="font-display text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Get in Touch
             </h2>
+            <div className="mt-2 mb-2 flex items-center gap-1.5">
+              <div className="w-10 h-0.5 bg-[#0B2545]"></div>
+              <div className="w-5 h-0.5 bg-[#A66A3F]"></div>
+            </div>
 
             {/* Exactly Specified Address */}
-            <div className="mt-3 p-3.5 bg-slate-50 border border-slate-200 text-xs font-sans text-slate-700 leading-relaxed">
+            <div className="mt-3 p-3.5 bg-[#FAF8F5] border border-slate-200 border-l-4 border-l-[#A66A3F] text-xs font-sans text-slate-700 leading-relaxed">
               <strong className="text-slate-900 block font-semibold mb-0.5">
                 LATTIS Industrial Adhesives
               </strong>
@@ -348,7 +353,7 @@ Thank you.`;
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full min-h-[48px] py-3 px-6 text-xs font-bold uppercase tracking-wider text-white bg-[#0B2545] hover:bg-[#071930] transition-all flex items-center justify-center shadow-xs"
+                  className="w-full min-h-[48px] py-3 px-6 text-xs font-bold uppercase tracking-wider text-white bg-[#0B2545] hover:bg-[#071930] border-b-2 border-[#A66A3F] transition-all flex items-center justify-center shadow-xs"
                 >
                   Submit Enquiry →
                 </button>

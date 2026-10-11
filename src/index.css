@@ -5,6 +5,13 @@
     --font-display: 'Barlow Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    /* LATTIS Brand Palette */
+    --color-brand-navy: #0B2545;
+    --color-brand-brown: #784421;
+    --color-brand-copper: #A66A3F;
+    --color-brand-gold: #E5B94F;
+    --color-bg-warm-neutral: #FAF8F5;
   }
 
   html {
@@ -16,7 +23,7 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #F8F9FA;
+    background-color: #FAF8F5;
     color: #1E293B;
     overflow-x: hidden;
     width: 100%;
@@ -41,8 +48,8 @@
   }
 }
 
-/* Engineering blueprint dot grid */
+/* Subtle engineering blueprint dot grid with warm technical hue */
 .engineering-grid-subtle {
-  background-image: radial-gradient(circle, #E2E8F0 1px, transparent 1px);
+  background-image: radial-gradient(circle, #E6E0D8 1px, transparent 1px);
   background-size: 20px 20px;
 }

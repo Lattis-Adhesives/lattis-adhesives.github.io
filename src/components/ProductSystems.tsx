@@ -23,6 +23,7 @@ export const ProductSystems: React.FC<ProductSystemsProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2 text-xs font-mono text-slate-500 mb-1">
+              <span className="w-1.5 h-1.5 bg-[#A66A3F]" aria-hidden="true"></span>
               <span>01. PRODUCT RANGE</span>
               <span aria-hidden="true">·</span>
               <span>INDUSTRIAL ADHESIVES</span>
@@ -30,6 +31,10 @@ export const ProductSystems: React.FC<ProductSystemsProps> = ({
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
               Product Systems
             </h2>
+            <div className="mt-2 mb-2 flex items-center gap-1.5">
+              <div className="w-10 h-0.5 bg-[#0B2545]"></div>
+              <div className="w-5 h-0.5 bg-[#A66A3F]"></div>
+            </div>
             <p className="mt-1 text-sm sm:text-base text-slate-600 max-w-xl">
               Precision anaerobic adhesives engineered to lock and seal threaded mechanical assemblies.
             </p>
@@ -64,7 +69,7 @@ export const ProductSystems: React.FC<ProductSystemsProps> = ({
               onClick={() => setActiveFilter('ts-523')}
               className={`min-h-[36px] px-3 py-1.5 text-xs font-mono font-bold transition-all ${
                 activeFilter === 'ts-523'
-                  ? 'bg-[#7A3E1D] text-white shadow-xs'
+                  ? 'bg-[#784421] text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -95,10 +100,15 @@ export const ProductSystems: React.FC<ProductSystemsProps> = ({
         </div>
 
         {/* Technical Specification Matrix */}
-        <div className="mt-10 sm:mt-12 bg-slate-50 border border-slate-300 p-4 sm:p-5 overflow-hidden">
-          <h3 className="font-display text-xl font-bold text-slate-900 mb-3 border-b border-slate-200 pb-2">
-            Technical Specification Matrix
-          </h3>
+        <div className="mt-10 sm:mt-12 bg-[#FAF8F5] border border-slate-300 border-t-2 border-t-[#A66A3F] p-4 sm:p-5 overflow-hidden">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
+            <h3 className="font-display text-xl font-bold text-slate-900">
+              Technical Specification Matrix
+            </h3>
+            <span className="font-mono text-[11px] text-[#784421] font-semibold hidden xs:inline">
+              ISO / ASTM COMPARISON
+            </span>
+          </div>
 
           <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
             <table className="w-full min-w-[500px] text-left font-mono text-xs border-collapse">
@@ -106,7 +116,7 @@ export const ProductSystems: React.FC<ProductSystemsProps> = ({
                 <tr className="border-b border-slate-300 bg-white">
                   <th className="py-2.5 px-3 text-slate-600 font-bold">PROPERTY</th>
                   <th className="py-2.5 px-3 text-[#0B2545] font-bold">TL-513 (THREADLOCKER)</th>
-                  <th className="py-2.5 px-3 text-[#7A3E1D] font-bold">TS-523 (THREAD SEALANT)</th>
+                  <th className="py-2.5 px-3 text-[#784421] font-bold">TS-523 (THREAD SEALANT)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">

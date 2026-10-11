@@ -67,12 +67,17 @@ export const TechnicalFAQ: React.FC = () => {
     <section id="faq" className="py-12 sm:py-16 lg:py-20 bg-white border-b border-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="pb-6 border-b border-slate-200">
-          <span className="text-xs font-mono text-slate-500 uppercase block mb-1">
+          <span className="text-xs font-mono text-slate-500 uppercase flex items-center gap-1.5 mb-1">
+            <span className="w-1.5 h-1.5 bg-[#A66A3F]" aria-hidden="true"></span>
             Technical Knowledge
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
             Frequently Asked Questions
           </h2>
+          <div className="mt-2 mb-2 flex items-center gap-1.5">
+            <div className="w-10 h-0.5 bg-[#0B2545]"></div>
+            <div className="w-5 h-0.5 bg-[#A66A3F]"></div>
+          </div>
           <p className="mt-1 text-sm sm:text-base text-slate-600 max-w-xl">
             Engineering guidance on anaerobic curing, metallurgy, and joint application.
           </p>
@@ -85,8 +90,8 @@ export const TechnicalFAQ: React.FC = () => {
             return (
               <div
                 key={faq.id}
-                className={`bg-[#F8F9FA] border transition-all ${
-                  isOpen ? 'border-slate-900 shadow-xs' : 'border-slate-300 hover:border-slate-400'
+                className={`bg-[#FAF8F5] border transition-all ${
+                  isOpen ? 'border-[#784421] shadow-xs border-l-4 border-l-[#A66A3F]' : 'border-slate-300 hover:border-[#A66A3F]'
                 }`}
               >
                 <button
@@ -104,7 +109,7 @@ export const TechnicalFAQ: React.FC = () => {
                     </h3>
                   </div>
 
-                  <span className="font-mono text-xs font-bold text-slate-500 shrink-0 min-w-[24px] min-h-[24px] flex items-center justify-center">
+                  <span className={`font-mono text-xs font-bold shrink-0 min-w-[24px] min-h-[24px] flex items-center justify-center ${isOpen ? 'text-[#784421]' : 'text-slate-500'}`}>
                     {isOpen ? '−' : '+'}
                   </span>
                 </button>
@@ -114,7 +119,7 @@ export const TechnicalFAQ: React.FC = () => {
                     <p>{faq.answer}</p>
                     <div className="mt-2.5 pt-2 border-t border-slate-200 font-mono text-xs text-slate-800 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-1">
                       <span><strong>Key:</strong> {faq.keyTakeaway}</span>
-                      <CrosshairReticle size={14} color="#64748B" />
+                      <CrosshairReticle size={14} color="#A66A3F" />
                     </div>
                   </div>
                 )}

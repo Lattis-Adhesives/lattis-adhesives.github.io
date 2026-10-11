@@ -46,7 +46,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8F9FA] text-[#1E293B] overflow-x-hidden w-full">
+    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#1E293B] overflow-x-hidden w-full">
       {/* 3-Zone Sticky Navigation Header */}
       <Header onQuoteClick={handleScrollToEnquiry} />
 

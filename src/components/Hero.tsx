@@ -15,25 +15,41 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
   const isTL = activeTab === 'tl-513';
 
   return (
-    <section className="relative bg-[#F8F9FA] border-b border-slate-300 engineering-grid-subtle">
+    <section className="relative bg-[#FAF8F5] border-b border-slate-300 engineering-grid-subtle">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column: Minimal, Confident Engineering Message */}
           <div className="lg:col-span-6 space-y-5 sm:space-y-6">
-            <span className="font-mono text-xs tracking-wider text-slate-500 uppercase block">
-              Engineered Anaerobic Chemistry
-            </span>
+            {/* Eyebrow with subtle copper detail */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="w-2 h-2 bg-[#A66A3F] shrink-0" aria-hidden="true"></span>
+              <span className="font-mono text-xs tracking-wider text-slate-600 uppercase">
+                Engineered Anaerobic Chemistry
+              </span>
+              <span className="text-slate-300" aria-hidden="true">/</span>
+              <span className="font-mono text-[11px] text-[#784421] font-semibold tracking-wider">
+                TL-513 & TS-523
+              </span>
+            </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-[#0B2545] tracking-tight leading-[1.0] break-words">
-              Precision in every connection.
-            </h1>
+            <div>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-[#0B2545] tracking-tight leading-[1.0] break-words">
+                Precision in every connection.
+              </h1>
+              {/* Subtle dual-accent hairline */}
+              <div className="mt-3 flex items-center gap-1.5">
+                <div className="w-12 h-1 bg-[#0B2545]"></div>
+                <div className="w-6 h-1 bg-[#A66A3F]"></div>
+                <div className="w-2 h-1 bg-[#E5B94F]"></div>
+              </div>
+            </div>
 
             <p className="text-sm sm:text-base lg:text-lg text-slate-600 font-sans leading-relaxed max-w-xl">
               Anaerobic threadlocking and thread sealing formulations engineered for high-vibration
               mechanical assemblies and leak-proof industrial fluid systems.
             </p>
 
-            {/* Product Switcher Tabs */}
+            {/* Product Switcher Tabs: In default view, TS-523 is visibly framed in copper brown */}
             <div className="pt-1 flex flex-wrap items-center gap-2">
               <button
                 type="button"
@@ -51,8 +67,8 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
                 onClick={() => setActiveTab('ts-523')}
                 className={`min-h-[40px] px-3.5 sm:px-4 py-2 text-xs font-mono font-bold transition-all border ${
                   !isTL
-                    ? 'bg-[#7A3E1D] text-white border-[#7A3E1D] shadow-xs'
-                    : 'bg-white text-slate-700 border-slate-300 hover:border-slate-500'
+                    ? 'bg-[#784421] text-white border-[#784421] shadow-xs'
+                    : 'bg-white text-[#784421] border-[#A66A3F]/70 hover:bg-[#FAF4EF] hover:border-[#784421]'
                 }`}
               >
                 TS-523 Thread Sealant
@@ -67,7 +83,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
                   onSelectProduct(activeTab);
                   onExploreClick();
                 }}
-                className="min-h-[44px] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white transition-all shadow-xs hover:opacity-95 text-center flex items-center justify-center"
+                className="min-h-[44px] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white transition-all shadow-xs hover:opacity-95 text-center flex items-center justify-center border-b-2 border-[#A66A3F]"
                 style={{ backgroundColor: activeProduct.themeColor }}
               >
                 View {activeProduct.code}
@@ -75,7 +91,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
               <button
                 type="button"
                 onClick={onEnquireClick}
-                className="min-h-[44px] px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-900 bg-white border border-slate-400 hover:border-slate-900 transition-all text-center flex items-center justify-center"
+                className="min-h-[44px] px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-900 bg-white border border-slate-300 hover:border-[#784421] hover:text-[#784421] transition-all text-center flex items-center justify-center"
               >
                 Enquire Now
               </button>
@@ -85,6 +101,9 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
           {/* Right Column: Rigid Technical Product Showcase Card */}
           <div className="lg:col-span-6 w-full">
             <div className="bg-white border-2 border-slate-900 shadow-sm relative overflow-hidden flex flex-col">
+              {/* Subtle copper accent top hairline */}
+              <div className="h-1 w-full bg-gradient-to-r from-[#0B2545] via-[#A66A3F] to-[#784421]"></div>
+
               {/* Product Card Top Band */}
               <div
                 className="px-4 sm:px-5 py-3 text-white flex items-center justify-between gap-3"
@@ -105,7 +124,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
               <div className="p-4 sm:p-6 space-y-4">
                 <div className="flex items-center justify-between gap-3 flex-wrap">
                   <LattisLogo size="sm" />
-                  <span className="font-mono text-[11px] sm:text-xs font-bold text-slate-600 bg-slate-100 px-2 py-0.5 border border-slate-200">
+                  <span className="font-mono text-[11px] sm:text-xs font-bold text-slate-700 bg-[#FAF8F5] px-2 py-0.5 border border-[#A66A3F]/30">
                     {activeProduct.operationalClassification}
                   </span>
                 </div>
@@ -120,7 +139,9 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
                 </div>
 
                 {/* Compact Diagram Box */}
-                <div className="p-3 sm:p-4 bg-slate-50 border border-slate-200 flex items-center justify-center min-h-[140px]">
+                <div className="p-3 sm:p-4 bg-[#FAF8F5] border border-slate-200 flex items-center justify-center min-h-[140px] relative">
+                  <div className="absolute top-2 left-2 w-1.5 h-1.5 bg-[#A66A3F]/60"></div>
+                  <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-[#A66A3F]/60"></div>
                   {isTL ? (
                     <BoltFastenerDiagram className="h-28 sm:h-32" />
                   ) : (
@@ -128,10 +149,13 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
                   )}
                 </div>
 
-                {/* Card Bottom Strip */}
+                {/* Card Bottom Strip with subtle copper indicator */}
                 <div className="pt-2 border-t border-slate-200 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-1 text-xs font-mono text-slate-600">
                   <span>Removable with hand tools</span>
-                  <span className="font-semibold text-slate-900">Anaerobic Matrix</span>
+                  <span className="font-semibold text-slate-900 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#A66A3F]" aria-hidden="true"></span>
+                    Anaerobic Matrix
+                  </span>
                 </div>
               </div>
             </div>

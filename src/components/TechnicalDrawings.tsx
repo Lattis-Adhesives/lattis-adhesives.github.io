@@ -236,8 +236,8 @@ export const PipeFittingDiagram: React.FC<{ className?: string; animated?: boole
           <stop offset="100%" stopColor="#94A3B8" />
         </linearGradient>
         <linearGradient id="tsFluidCompact" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#B45309" />
-          <stop offset="100%" stopColor="#7A3E1D" />
+          <stop offset="0%" stopColor="#A66A3F" />
+          <stop offset="100%" stopColor="#784421" />
         </linearGradient>
       </defs>
 
@@ -285,10 +285,10 @@ export const PipeFittingDiagram: React.FC<{ className?: string; animated?: boole
         y="94"
         width="30"
         height="38"
-        fill="#7A3E1D"
-        fillOpacity="0.25"
-        stroke="#7A3E1D"
-        strokeWidth="1.5"
+        fill="#784421"
+        fillOpacity="0.22"
+        stroke="#A66A3F"
+        strokeWidth="1.2"
         strokeDasharray="3 2"
         rx="2"
       />
@@ -297,19 +297,19 @@ export const PipeFittingDiagram: React.FC<{ className?: string; animated?: boole
       <path
         d="M61 74 C61 74 53 85 53 89 C53 93.5 56.5 97 61 97 C65.5 97 69 93.5 69 89 C69 85 61 74 61 74 Z"
         fill="url(#tsFluidCompact)"
-        stroke="#4A2511"
+        stroke="#784421"
         strokeWidth="1.2"
         className={animated ? 'animate-bounce' : ''}
       />
 
-      <text x="61" y="66" fill="#7A3E1D" fontSize="8.5" fontFamily="'JetBrains Mono', monospace" fontWeight="600" textAnchor="middle">
+      <text x="61" y="66" fill="#784421" fontSize="8.5" fontFamily="'JetBrains Mono', monospace" fontWeight="600" textAnchor="middle">
         TS-523 SEAL
       </text>
 
       {/* Reticle */}
-      <circle cx="61" cy="113" r="20" stroke="#7A3E1D" strokeWidth="0.8" strokeDasharray="2 2" />
-      <line x1="61" y1="90" x2="61" y2="136" stroke="#7A3E1D" strokeWidth="0.8" />
-      <line x1="38" y1="113" x2="84" y2="113" stroke="#7A3E1D" strokeWidth="0.8" />
+      <circle cx="61" cy="113" r="20" stroke="#A66A3F" strokeWidth="0.8" strokeDasharray="2 2" />
+      <line x1="61" y1="90" x2="61" y2="136" stroke="#A66A3F" strokeWidth="0.8" />
+      <line x1="38" y1="113" x2="84" y2="113" stroke="#A66A3F" strokeWidth="0.8" />
     </svg>
   </div>
 );
