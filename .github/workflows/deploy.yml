@@ -1,3 +1,4 @@
+
 name: Deploy LATTIS website
 
 on:
@@ -10,30 +11,38 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Build Vite app
+      - name: Build React/Vite website
         run: npm run build
 
-      - uses: actions/configure-pages@v5
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
 
       - name: Preserve custom domain
-        run: cp CNAME dist/CNAME
+        run: if [ -f CNAME ]; then cp CNAME dist/CNAME; fi
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload built website
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: ./dist
 
   deploy:
     needs: build
@@ -42,5 +51,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/deploy-pages@v4
+      - name: Deploy website
         id: deployment
+        uses: actions/deploy-pages@v4
