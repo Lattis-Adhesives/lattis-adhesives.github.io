@@ -101,8 +101,14 @@ export const Hero: React.FC<HeroProps> = ({ onExploreClick, onEnquireClick, onSe
           {/* Right Column: Rigid Technical Product Showcase Card */}
           <div className="lg:col-span-6 w-full">
             <div className="bg-white border-2 border-slate-900 shadow-sm relative overflow-hidden flex flex-col">
-              {/* Subtle copper accent top hairline */}
-              <div className="h-1 w-full bg-gradient-to-r from-[#0B2545] via-[#A66A3F] to-[#784421]"></div>
+              {/* Dynamic contrast hairline: Brown gradient for TL-513, Deep Navy with Light Navy Tint center for TS-523 */}
+              <div
+                className={`h-1 w-full transition-all duration-300 ${
+                  isTL
+                    ? 'bg-gradient-to-r from-[#784421] via-[#A66A3F] to-[#784421]'
+                    : 'bg-gradient-to-r from-[#0B2545] via-[#2C4C6F] to-[#0B2545]'
+                }`}
+              ></div>
 
               {/* Product Card Top Band */}
               <div

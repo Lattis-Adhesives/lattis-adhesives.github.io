@@ -111,6 +111,36 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     if (initialNote) setFormData((prev) => ({ ...prev, applicationNote: initialNote }));
   }, [initialProduct, initialNote]);
 
+  const numQuantity = parseInt(formData.quantity, 10) || 0;
+
+  const handleIncrement = () => {
+    const current = parseInt(formData.quantity, 10);
+    const validCurrent = isNaN(current) || current < 1 ? 0 : current;
+    const nextVal = validCurrent + 2;
+    setFormData((prev) => ({ ...prev, quantity: String(nextVal) }));
+    if (errors.quantity) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.quantity;
+        return next;
+      });
+    }
+  };
+
+  const handleDecrement = () => {
+    const current = parseInt(formData.quantity, 10);
+    const validCurrent = isNaN(current) ? 1 : current;
+    const nextVal = Math.max(1, validCurrent - 1);
+    setFormData((prev) => ({ ...prev, quantity: String(nextVal) }));
+    if (errors.quantity) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.quantity;
+        return next;
+      });
+    }
+  };
+
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!formData.name.trim()) errs.name = 'Contact name is required.';
@@ -125,6 +155,12 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     if (!formData.email.trim() || !formData.email.includes('@')) {
       errs.email = 'A valid work email is required.';
     }
+
+    const qtyVal = parseInt(formData.quantity, 10);
+    if (!formData.quantity || isNaN(qtyVal) || qtyVal < 1) {
+      errs.quantity = 'Quantity must be at least 1 unit.';
+    }
+
     if (!formData.city.trim()) errs.city = 'City / location is required.';
 
     setErrors(errs);
@@ -501,22 +537,83 @@ Thank you.`;
                 </div>
 
                 <div>
-                  <label htmlFor="qty-select" className="block text-xs font-mono font-semibold text-slate-700 mb-1">
-                    QUANTITY *
-                  </label>
-                  <select
-                    id="qty-select"
-                    value={formData.quantity}
-                    onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                    className="w-full min-h-[44px] px-3 py-2.5 text-xs bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
-                  >
-                    <option value="10">10 Units</option>
-                    <option value="25">25 Units</option>
-                    <option value="50">50 Units</option>
-                    <option value="100">100 Units</option>
-                    <option value="250">250 Units</option>
-                    <option value="500+">500+ Units</option>
-                  </select>
+                  <div className="flex items-center justify-between mb-1">
+                    <label htmlFor="qty-input" className="block text-xs font-mono font-semibold text-slate-700">
+                      QUANTITY (UNITS) *
+                    </label>
+                    {numQuantity > 200 ? (
+                      <span className="text-[10px] text-[#784421] font-mono font-bold">
+                        BULK ORDER
+                      </span>
+                    ) : errors.quantity ? (
+                      <span className="text-[11px] text-red-600 font-mono font-medium">
+                        {errors.quantity}
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <div className="flex items-center">
+                    <button
+                      type="button"
+                      onClick={handleDecrement}
+                      disabled={numQuantity <= 1}
+                      className="min-w-[40px] min-h-[44px] bg-slate-100 hover:bg-slate-200 active:bg-slate-300 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-300 border-r-0 text-slate-800 font-mono text-base font-bold flex items-center justify-center transition-colors focus:outline-none"
+                      title="Decrease quantity by 1"
+                      aria-label="Decrease quantity by 1"
+                    >
+                      -
+                    </button>
+
+                    <input
+                      id="qty-input"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      required
+                      value={formData.quantity}
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        if (/^\d*$/.test(raw)) {
+                          setFormData((prev) => ({ ...prev, quantity: raw }));
+                          if (errors.quantity && parseInt(raw, 10) >= 1) {
+                            setErrors((prev) => {
+                              const next = { ...prev };
+                              delete next.quantity;
+                              return next;
+                            });
+                          }
+                        }
+                      }}
+                      onBlur={() => {
+                        const val = parseInt(formData.quantity, 10);
+                        if (isNaN(val) || val < 1) {
+                          setFormData((prev) => ({ ...prev, quantity: '1' }));
+                        }
+                      }}
+                      placeholder="1 - 200"
+                      className="w-full min-h-[44px] px-3 py-2.5 text-center text-xs font-mono font-bold bg-[#F8F9FA] border border-slate-300 focus:bg-white focus:border-slate-900 focus:outline-none"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={handleIncrement}
+                      className="min-w-[40px] min-h-[44px] bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border border-slate-300 border-l-0 text-slate-800 font-mono text-base font-bold flex items-center justify-center transition-colors focus:outline-none"
+                      title="Increase quantity by 2"
+                      aria-label="Increase quantity by 2"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {numQuantity > 200 ? (
+                    <div className="mt-1.5 p-2 bg-[#FAF4EF] border border-[#A66A3F]/40 text-[11px] font-mono text-[#784421] leading-tight">
+                      ⚠️ For bulk quantities exceeding 200 units, please contact us directly regarding custom pricing and bulk dispatch.
+                    </div>
+                  ) : (
+                    <span className="text-[10px] text-slate-500 font-mono mt-1 block">
+                      Range: 1 to 200 units.
+                    </span>
+                  )}
                 </div>
               </div>
 

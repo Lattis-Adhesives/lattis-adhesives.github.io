@@ -18,14 +18,17 @@ export const ProductBottleView: React.FC<ProductBottleViewProps> = ({
 
   return (
     <div className="bg-white border border-slate-300 shadow-xs relative overflow-hidden">
-      {/* Top Bar */}
-      <div className="bg-slate-900 text-slate-300 px-3.5 sm:px-4 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs font-mono border-b border-slate-800">
+      {/* Top Bar: Navy for TL-513, Industrial Brown for TS-523 */}
+      <div
+        className="text-white px-3.5 sm:px-4 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs font-mono border-b border-black/10 transition-colors"
+        style={{ backgroundColor: isTL ? '#0B2545' : '#784421' }}
+      >
         <div className="flex items-center gap-2 min-w-0">
           <span className="text-white font-semibold shrink-0">{product.code}</span>
-          <span className="text-slate-500">/</span>
-          <span className="truncate">{product.category}</span>
+          <span className="text-white/60">/</span>
+          <span className="truncate text-white/90">{product.category}</span>
         </div>
-        <span className="text-slate-400 text-[11px] shrink-0">{product.operationalClassification}</span>
+        <span className="text-white/80 text-[11px] shrink-0">{product.operationalClassification}</span>
       </div>
 
       {/* Main Label Card */}
